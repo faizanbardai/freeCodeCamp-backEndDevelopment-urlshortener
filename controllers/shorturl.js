@@ -6,6 +6,15 @@ let count = 1;
 const createShortURL = (req, res) => {
   const url = new URL(req.body.url);
 
+  const regex = /https:\/\//;
+
+  const isValidURL = regex.test(url.href);
+
+  if (!isValidURL) {
+    res.send({ error: "Invalid URL" });
+    return;
+  }
+
   dns.lookup(url.hostname, (err) => {
     if (err) {
       res.send({ error: "Invalid Hostname" });
